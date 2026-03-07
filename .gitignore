@@ -1,1 +1,4 @@
-.env
+# Ignore all .env files
+.env*
+# But re-include the .env.sample file
+!.env.sample
