@@ -1,10 +1,12 @@
 import express from "express";
 import pool from "./config/db";
 import router from "./routes/router";
+import { rateLimitMiddleware } from "./middleware/ratelimiter";
 
 const app = express();
 
 app.use(express.json());
+app.use(rateLimitMiddleware); // Apply rate limiting middleware globally
 app.use(router);
 
 
