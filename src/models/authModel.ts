@@ -18,3 +18,14 @@ export async function loginUser(email: string, password: string): Promise<boolea
     const hashedPassword = result.rows[0].password_hash;
     return await bcrypt.compare(password, hashedPassword);
 }
+
+export async function getUserIdByEmail(email: string): Promise<number | null> {
+    const query = 'SELECT id FROM users WHERE email = $1';
+    const result = await pool.query(query, [email]);
+
+    if (result.rows.length === 0) {
+        return null;
+    }
+
+    return result.rows[0].id;
+}
