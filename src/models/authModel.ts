@@ -1,10 +1,12 @@
+import { StringMappingType } from 'typescript';
 import pool from '../config/db';
 import bcrypt from 'bcrypt';
 
 export async function createUser(email: string, password: string): Promise<void> {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const query = 'INSERT INTO users (email, password_hash) VALUES ($1, $2)';
-    console.log(await pool.query(query, [email, hashedPassword]));
+
+    const createQuery = 'INSERT INTO users (email, password_hash) VALUES ($1, $2)';
+    await pool.query(createQuery, [email, hashedPassword]);
 }
 
 export async function loginUser(email: string, password: string): Promise<boolean> {
@@ -19,13 +21,3 @@ export async function loginUser(email: string, password: string): Promise<boolea
     return await bcrypt.compare(password, hashedPassword);
 }
 
-export async function getUserIdByEmail(email: string): Promise<number | null> {
-    const query = 'SELECT id FROM users WHERE email = $1';
-    const result = await pool.query(query, [email]);
-
-    if (result.rows.length === 0) {
-        return null;
-    }
-
-    return result.rows[0].id;
-}

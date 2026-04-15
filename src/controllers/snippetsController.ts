@@ -11,7 +11,7 @@ export async function createSnippetController(req: AuthenticatedRequest, res: Re
     try {
         const { title, content } = req.body;
 
-        const id =  
+        
 
         res.status(201).json({ message: req.user})
     }
