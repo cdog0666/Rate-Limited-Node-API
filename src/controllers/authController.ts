@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { CreateUserInput } from '../types/user';
+import { CreateUserInput } from '../types/userTypes';
 import { createUser, loginUser } from '../models/authModel';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';

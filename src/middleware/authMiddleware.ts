@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { AuthenticatedRequest } from '../types/userTypes';
+
 
 dotenv.config();
 
-interface AuthenticatedRequest extends Request {
-    user?: string | JwtPayload;
+interface JWTPayload {
+    email: string;
 }
 
 export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
@@ -25,10 +27,9 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
             return res.status(401).json({ message: 'Invalid authorization header format' });
         }
 
-        const decoded = jwt.verify(token, secret) as string | JwtPayload;
-        console.log(decoded);
+        const decoded = jwt.verify(token, secret) as JwtPayload;
 
-        req.user = decoded; // Attach user info to the request object
+        req.email = decoded.email; // Attach just the email to the request object
 
         next();
     }
